@@ -1,0 +1,23 @@
+[APP]
+# mac address of bbq device, use getdevices.py to find this
+device = 55:44:33:22:11:00
+
+# max rate (in seconds) which data will be stored in the database
+max_storage_rate = 3
+
+# how long (in hours) to store data in database
+# cleanup.py will delete any record order than this
+max_data_storage = 168
+
+# db type. choose sqlite or mysql
+db_type = sqlite
+
+# sqlite only
+db_filename = temps.db
+
+# mysql only
+db_host = 127.0.0.1
+db_port = 3306
+db_name = temps
+db_user = temp
+db_pass = pass
