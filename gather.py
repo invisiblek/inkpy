@@ -37,10 +37,21 @@ if not database_exists(engine.url):
 else:
   engine.connect()
 
+Device.__table__.create(bind=engine, checkfirst=True)
 Temp.__table__.create(bind=engine, checkfirst=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+
+inkbird = None
+query = session.query(Device).filter(Device.address == config['APP']['device'])
+if not query.scalar():
+  inkbird = Device(address=config['APP']['device'],
+             name="inkbird")
+  session.add(inkbird)
+  session.commit()
+else:
+  inkbird = query.first()
 
 def getbbqclient():
   global client
@@ -72,7 +83,7 @@ def handletemperature(data):
   for temp in list(enumerate(temps)):
     print("{}: {}: {}".format(config['APP']['device'], temp[0], temp[1]))
     temp = Temp(poll_date=now,
-                device=config['APP']['device'],
+                device_id=inkbird.id,
                 probe = temp[0],
                 temp = temp[1])
     session.add(temp)
