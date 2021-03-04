@@ -48,7 +48,7 @@ inkbird = None
 query = session.query(Device).filter(Device.address == config['APP']['device'])
 if not query.scalar():
   inkbird = Device(address=config['APP']['device'],
-             name="inkbird")
+             name="inkbird_{}".format(config['APP']['device'].replace(':', '')))
   session.add(inkbird)
   session.commit()
 else:
@@ -61,7 +61,7 @@ def getbbqclient():
   global service
   global characteristics
 
-  client = btle.Peripheral(config['APP']['device'])
+  client = btle.Peripheral(inkbird.address)
   service = client.getServiceByUUID(SERVICE_UUID)
   characteristics = service.getCharacteristics()
 
@@ -96,7 +96,7 @@ def handletemperature(data):
       else:
         probes[temp[0]] = query.first()
 
-    print("{}: {}: {}".format(config['APP']['device'], temp[0], temp[1]))
+    print("{}: {}: {}".format(inkbird.address, probes[temp[0]].probe_number, temp[1]))
     temp = Temp(poll_date=now,
                 device_id=inkbird.id,
                 probe_id = probes[temp[0]].id,
