@@ -12,13 +12,23 @@ class Device(Base):
 
 Index('address', Device.address, unique=True)
 
+class Probe(Base):
+  __tablename__ = 'probe'
+  id = Column(Integer, primary_key=True)
+  device_id = Column(Integer, ForeignKey(Device.id))
+  probe_number = Column(Integer)
+  name = Column(String(48))
+
+Index('device_id/probe_number', Probe.device_id, Probe.probe_number, unique=True)
+
 class Temp(Base):
   __tablename__ = 'temps'
   id = Column(Integer, primary_key=True)
   poll_date = Column(DateTime, index=True)
   device_id = Column(Integer, ForeignKey(Device.id))
-  probe = Column(Integer, index=True)
+  probe_id = Column(Integer, ForeignKey(Probe.id))
   temp = Column(Integer)
   device = relationship("Device")
+  probe = relationship("Probe")
 
-Index('poll_date/device_id/probe', Temp.poll_date, Temp.device_id, Temp.probe, unique=True)
+Index('poll_date/device_id/probe', Temp.poll_date, Temp.device_id, Temp.probe_id, unique=True)

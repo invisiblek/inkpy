@@ -38,6 +38,7 @@ else:
   engine.connect()
 
 Device.__table__.create(bind=engine, checkfirst=True)
+Probe.__table__.create(bind=engine, checkfirst=True)
 Temp.__table__.create(bind=engine, checkfirst=True)
 
 Session = sessionmaker(bind=engine)
@@ -52,6 +53,8 @@ if not query.scalar():
   session.commit()
 else:
   inkbird = query.first()
+
+probes = {}
 
 def getbbqclient():
   global client
@@ -81,10 +84,22 @@ def handletemperature(data):
 
   now = datetime.now()
   for temp in list(enumerate(temps)):
+    if temp[0] not in probes:
+      query = session.query(Probe).filter(Probe.device_id == inkbird.id, Probe.probe_number == temp[0])
+      if not query.scalar():
+        p = Probe(device_id=inkbird.id,
+                  probe_number=temp[0],
+                  name="probe{}".format(temp[0]))
+        session.add(p)
+        session.commit()
+        probes[temp[0]] = p
+      else:
+        probes[temp[0]] = query.first()
+
     print("{}: {}: {}".format(config['APP']['device'], temp[0], temp[1]))
     temp = Temp(poll_date=now,
                 device_id=inkbird.id,
-                probe = temp[0],
+                probe_id = probes[temp[0]].id,
                 temp = temp[1])
     session.add(temp)
     session.commit()
