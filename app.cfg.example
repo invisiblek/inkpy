@@ -5,6 +5,10 @@ device = 55:44:33:22:11:00
 # unit of measure that the device outputs (c or f)
 uom = c
 
+# inkbirds express 10C as 100C. this controls the math that
+# will be done to store a legit number in the database
+temp_divisor = 10
+
 # max rate (in seconds) which data will be stored in the database
 max_storage_rate = 3
 

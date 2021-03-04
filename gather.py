@@ -57,6 +57,8 @@ else:
 
 probes = {}
 
+temp_divisor = int(config['APP']['temp_divisor'])
+
 def getbbqclient():
   global client
   global service
@@ -97,11 +99,11 @@ def handletemperature(data):
       else:
         probes[temp[0]] = query.first()
 
-    print("{}: {}: {}".format(inkbird.address, probes[temp[0]].probe_number, temp[1]))
+    print("{}: {}: {}".format(inkbird.address, probes[temp[0]].probe_number, int(temp[1])/temp_divisor))
     temp = Temp(poll_date=now,
                 device_id=inkbird.id,
                 probe_id = probes[temp[0]].id,
-                temp = temp[1],
+                temp = int(temp[1])/temp_divisor,
                 uom = inkbird.uom)
     session.add(temp)
     session.commit()
