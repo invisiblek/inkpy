@@ -9,6 +9,7 @@ class Device(Base):
   id = Column(Integer, primary_key=True)
   address = Column(String(48), index=True)
   name = Column(String(48))
+  uom = Column(String(1))
 
 Index('address', Device.address, unique=True)
 
@@ -28,6 +29,7 @@ class Temp(Base):
   device_id = Column(Integer, ForeignKey(Device.id))
   probe_id = Column(Integer, ForeignKey(Probe.id))
   temp = Column(Integer)
+  uom = Column(String(1))
   device = relationship("Device")
   probe = relationship("Probe")
 
