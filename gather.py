@@ -17,7 +17,7 @@ import sys
 
 debug = False
 
-next_storage_time = datetime.now()
+next_storage_time = datetime.utcnow()
 
 client = None
 service = None
@@ -84,7 +84,7 @@ def getbbqclient():
   characteristics[4].write(UNITS_F_MESSAGE, withResponse = True)
 
 def handletemperature(temps):
-  now = datetime.now()
+  now = datetime.utcnow()
   for temp in list(enumerate(temps)):
     if temp[0] not in probes:
       query = session.query(Probe).filter(Probe.device_id == inkbird.id, Probe.probe_number == temp[0])
@@ -122,7 +122,7 @@ class NotificationDelegate(btle.DefaultDelegate):
       return
 
     global next_storage_time
-    now = datetime.now()
+    now = datetime.utcnow()
     if now > next_storage_time:
       next_storage_time = now + timedelta(seconds=int(config['APP']['max_storage_rate']))
 
