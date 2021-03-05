@@ -2,6 +2,9 @@
 # mac address of bbq device, use getdevices.py to find this
 device = 55:44:33:22:11:00
 
+# set to true to get random temps rather than poll from bluetooth
+testmode = False
+
 # unit of measure that the device outputs (c or f)
 uom = c
 

@@ -6,6 +6,7 @@ from classes import *
 from constants import *
 from configparser import ConfigParser
 from datetime import datetime, timedelta
+from random import randrange
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import sessionmaker
@@ -58,6 +59,7 @@ else:
 probes = {}
 
 temp_divisor = int(config['APP']['temp_divisor'])
+test_mode = config['APP']['testmode'].lower() == "true"
 
 def getbbqclient():
   global client
@@ -81,10 +83,7 @@ def getbbqclient():
   # set fahrenheit
   characteristics[4].write(UNITS_F_MESSAGE, withResponse = True)
 
-def handletemperature(data):
-  temps = array("H")
-  temps.frombytes(data)
-
+def handletemperature(temps):
   now = datetime.now()
   for temp in list(enumerate(temps)):
     if temp[0] not in probes:
@@ -128,19 +127,31 @@ class NotificationDelegate(btle.DefaultDelegate):
       next_storage_time = now + timedelta(seconds=int(config['APP']['max_storage_rate']))
 
       if cHandle == 48:
-        handletemperature(data)
+        temps = array("H")
+        temps.frombytes(data)
+        handletemperature(temps)
 #      elif cHandle == 37:
 #        handlebattery(data)
 
 def gather():
-  getbbqclient()
-  if not client:
-    print("Unable to set up client")
-    sys.exit()
+  if test_mode:
+    temps = array("H")
+    for x in range(0, 4):
+      temps.append(randrange(0, 350) * temp_divisor)
+    while True:
+      handletemperature(temps)
+      time.sleep(int(config['APP']['max_storage_rate']))
+      for x in range(0, 4):
+        temps[x] += randrange(-5, 5) * temp_divisor
+  else:
+    getbbqclient()
+    if not client:
+      print("Unable to set up client")
+      sys.exit()
 
-  client.setDelegate(NotificationDelegate())
+    client.setDelegate(NotificationDelegate())
 
-  while True:
-    client.waitForNotifications(1.0)
+    while True:
+      client.waitForNotifications(1.0)
 
 gather()
