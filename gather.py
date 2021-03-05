@@ -142,7 +142,10 @@ def gather():
       handletemperature(temps)
       time.sleep(int(config['APP']['max_storage_rate']))
       for x in range(0, 4):
-        temps[x] += randrange(-5, 5) * temp_divisor
+        change = randrange(-5, 5) * temp_divisor
+        if temps[x] + change < 0 or temps[x] + change > 600:
+          change *= -1
+        temps[x] += change
   else:
     getbbqclient()
     if not client:
