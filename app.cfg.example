@@ -8,6 +8,9 @@ testmode = False
 # unit of measure that the device outputs (c or f)
 uom = c
 
+# max temp, above this will be ignored
+max_temp = 6500
+
 # inkbirds express 10C as 100C. this controls the math that
 # will be done to store a legit number in the database
 temp_divisor = 10

@@ -98,11 +98,16 @@ def handletemperature(temps):
       else:
         probes[temp[0]] = query.first()
 
+    t = int(temp[1]) / temp_divisor
     print("{}: {}: {}".format(inkbird.address, probes[temp[0]].probe_number, int(temp[1])/temp_divisor))
+
+    if t > int(config['APP']['max_temp']):
+      t = 0
+
     temp = Temp(poll_date=now,
                 device_id=inkbird.id,
                 probe_id = probes[temp[0]].id,
-                temp = int(temp[1])/temp_divisor,
+                temp = t,
                 uom = inkbird.uom)
     session.add(temp)
     session.commit()
