@@ -152,14 +152,27 @@ def gather():
           change *= -1
         temps[x] += change
   else:
-    getbbqclient()
-    if not client:
-      print("Unable to set up client")
-      sys.exit()
+    while not client:
+      try:
+        getbbqclient()
+      except:
+        pass
+      if not client:
+        time.sleep(5)
 
     client.setDelegate(NotificationDelegate())
 
     while True:
+      if not client:
+        while not client:
+          try:
+            getbbqclient()
+          except:
+            pass
+        if not client:
+          time.sleep(5)
+        client.setDelegate(NotificationDelegate())
+
       client.waitForNotifications(1.0)
 
 gather()
