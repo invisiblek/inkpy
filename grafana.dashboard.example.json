@@ -1,0 +1,439 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 5,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "4WrKw3F4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "timezone": [
+          "America/Chicago"
+        ],
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  (temp * 9/5) + 32 AS \"Probe 1\"\nFROM temps\nWHERE probe_id = 1 and temp > 0\nORDER BY poll_date",
+          "refId": "Probe 1",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  (temp * 9/5) + 32 AS \"Probe 2\"\nFROM temps\nWHERE probe_id = 2 and temp > 0\nORDER BY poll_date",
+          "refId": "Probe 2",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  (temp * 9/5) + 32 AS \"Probe 3\"\nFROM temps\nWHERE probe_id = 3 and temp > 0\nORDER BY poll_date",
+          "refId": "Probe 3",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  (temp * 9/5) + 32 AS \"Probe 4\"\nFROM temps\nWHERE probe_id = 4 and temp > 0\nORDER BY poll_date",
+          "refId": "Probe 4",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  225 AS \"Grill Target\"\nFROM temps\nWHERE probe_id = 1 and temp > 0\nORDER BY poll_date",
+          "refId": "Grill Target",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "4WrKw3F4z"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  poll_date AS \"time\",\n  165 AS \"Meat Target\"\nFROM temps\nWHERE probe_id = 1 and temp > 0\nORDER BY poll_date",
+          "refId": "Meat Target",
+          "select": [
+            [
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "temp"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "temps",
+          "timeColumn": "poll_date",
+          "timeColumnType": "timestamp",
+          "where": []
+        }
+      ],
+      "title": "Grill",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Grill",
+  "uid": "g3i1XqF4z",
+  "version": 7,
+  "weekStart": ""
+}
